@@ -1,0 +1,7 @@
+*.pyc
+*.pdf
+*.teste.pyc
+*.teste.py
+build
+*.egg-info
+dist
