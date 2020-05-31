@@ -21,7 +21,7 @@
 
 
 from math import *
-from models.pose import *
+from pose import *
 
 class DifferentialDriveDynamics:
   

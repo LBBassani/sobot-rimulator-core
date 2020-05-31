@@ -20,12 +20,21 @@
 
 
 
-# AN ABSTRACT GEOMETRY CLASS
+from math import *
+from sensor import *
 
-class Geometry:
-  def __init__( self, vertexes ):
-    self.vertexes = vertexes
-    self.bounding_circle = None
+class WheelEncoder( Sensor ):
 
-  def get_transformation_to_pose( self, pose ):
-    raise NotImplementedError()
+  def __init__( self, ticks_per_rev ):
+    self.ticks_per_rev = ticks_per_rev
+    self.real_revs = 0.0
+    self.tick_count = 0
+
+  # update the tick count for this wheel encoder
+  # takes a float representing the number of forward revolutions made
+  def step_revolutions( self, revolutions ):
+    self.real_revs += revolutions
+    self.tick_count = int( self.real_revs * self.ticks_per_rev )
+
+  def read( self ):
+    return self.tick_count

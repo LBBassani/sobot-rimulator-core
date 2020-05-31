@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 
 setuptools.setup(
-     name='sobot-rimulator-core',  
+     name='srimulatorcore',  
      version='0.1',
      author="Lorena B Bassani",
      author_email="lorenabassani12@gmail.com",

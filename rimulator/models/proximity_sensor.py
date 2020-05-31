@@ -22,9 +22,9 @@
 
 from math import *
 import utils.linalg2_util as linalg
-from models.line_segment import *
-from models.pose import *
-from models.sensor import *
+from line_segment import *
+from pose import *
+from sensor import *
 
 MIN_READ_VALUE = 18
 MAX_READ_VALUE = 3960

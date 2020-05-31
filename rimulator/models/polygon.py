@@ -21,7 +21,7 @@
 
 
 from utils import linalg2_util as linalg
-from models.geometry import *
+from geometry import *
 
 class Polygon( Geometry ):
 
