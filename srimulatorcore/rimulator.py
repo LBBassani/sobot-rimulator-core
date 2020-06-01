@@ -11,14 +11,14 @@ from .sobots_samples.kheperaiii.kheperaiii import Kheperaiii
 from .gui.viewer import Viewer
 from .gui.frame import Frame
 
-from Simulation.simulator.models.map_manager import MapManager
-from Simulation.simulator.models.robot import Robot
-from Simulation.simulator.models.world import World
+from .models.map_manager import MapManager
+from .models.robot import Robot
+from .models.world import World
 
-from Simulation.simulator.views.world_view import WorldView
+from .views.world_view import WorldView
 
-from Simulation.simulator.sim_exceptions.collision_exception import CollisionException
-from Simulation.simulator.sim_exceptions.goal_reached_exception import GoalReachedException
+from .sim_exceptions.collision_exception import CollisionException
+from .sim_exceptions.goal_reached_exception import GoalReachedException
 
 REFRESH_RATE = 20.0 # hertz
 
