@@ -21,10 +21,10 @@ from math import sin, cos, pi
 from random import random, randrange
 import pickle
 
-from .polygon import Polygon
+from ...utils.polygon import Polygon
 from .rectangle_obstacle import RectangleObstacle, Pose
 
-from ..utils import geometrics_util as geometrics
+from ...utils import geometrics_util as geometrics
 
 # random environment parameters
 OBS_MIN_DIM = 0.1           # meters

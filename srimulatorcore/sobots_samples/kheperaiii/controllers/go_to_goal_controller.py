@@ -19,7 +19,7 @@
 
 from math import atan2
 
-from ....models.controllers.go_to_goal_controller import GoToGoalController
+from ....models.robot.controllers.go_to_goal_controller import GoToGoalController
 from ....utils import linalg2_util as linalg
 from ....utils import math_util
 

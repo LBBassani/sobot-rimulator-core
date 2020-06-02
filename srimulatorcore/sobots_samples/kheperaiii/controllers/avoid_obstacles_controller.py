@@ -18,7 +18,7 @@
 
 from math import atan2, pi
 
-from ....models.controllers.avoid_obstacles_controller import AvoidObstaclesController
+from ....models.robot.controllers.avoid_obstacles_controller import AvoidObstaclesController
 from ....utils import linalg2_util as linalg
 from ....utils import math_util
 

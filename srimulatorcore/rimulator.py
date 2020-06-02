@@ -11,9 +11,9 @@ from .sobots_samples.kheperaiii.kheperaiii import Kheperaiii
 from .gui.viewer import Viewer
 from .gui.frame import Frame
 
-from .models.map_manager import MapManager
-from .models.robot import Robot
-from .models.world import World
+from .models.map.map_manager import MapManager
+from .models.robot.robot import Robot
+from .models.world.world import World
 
 from .views.world_view import WorldView
 

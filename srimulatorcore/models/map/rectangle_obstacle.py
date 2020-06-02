@@ -17,8 +17,8 @@
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
-from .polygon import Polygon
-from .pose import Pose
+from ...utils.polygon import Polygon
+from ...utils.pose import Pose
 
 class RectangleObstacle:
 

@@ -18,8 +18,8 @@
 
 
 from .control_state import ControlState
-from ..utils import linalg2_util as linalg
-from ..sim_exceptions.goal_reached_exception import GoalReachedException
+from ...utils import linalg2_util as linalg
+from ...sim_exceptions.goal_reached_exception import GoalReachedException
 
 # event parameters
 D_STOP = 0.05     # meters from goal
