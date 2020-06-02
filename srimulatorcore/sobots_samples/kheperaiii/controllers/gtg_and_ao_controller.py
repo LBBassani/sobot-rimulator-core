@@ -95,7 +95,7 @@ class KheperaiiiGTGAndAOController(GTGAndAOController):
     self.prev_eP = eP
     self.prev_eI = eI
 
-    self.supervisor.set_outputs( v, omega )
+    self.supervisor.set_outputs( v = v, omega = omega )
 
     # === FOR DEBUGGING ===
     # self._print_vars( eP, eI, eD, v, omega )

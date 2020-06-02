@@ -36,4 +36,4 @@ class KheperaiiiGoToAngleController(GoToAngleController):
     e = math_util.normalize_angle( theta_d - theta )
     omega = self.k_p * e
 
-    self.supervisor.set_outputs( 1.0, omega )
+    self.supervisor.set_outputs( v = 1.0, omega = omega )
