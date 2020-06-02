@@ -20,8 +20,8 @@
 
 
 
-from ..utils import linalg2_util as linalg
-from ..utils import math_util
+from . import linalg2_util as linalg
+from . import math_util
 
 class Pose:
 

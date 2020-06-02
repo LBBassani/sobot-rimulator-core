@@ -25,7 +25,7 @@ from .controllers.avoid_obstacles_controller_view import AvoidObstaclesControlle
 from .controllers.follow_wall_controller_view import FollowWallControllerView
 from .controllers.go_to_goal_controller_view import GoToGoalControllerView
 from .controllers.gtg_and_ao_controller_view import GTGAndAOControllerView
-from ..models.control_state import *
+from ..models.supervisor.control_state import *
 
 class SupervisorView:
 

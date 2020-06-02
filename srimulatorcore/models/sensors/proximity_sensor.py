@@ -18,9 +18,9 @@
 
 
 from math import ceil, e
-from ..utils import linalg2_util as linalg
-from .line_segment import LineSegment
-from .pose import Pose
+from ...utils import linalg2_util as linalg
+from ..map.line_segment import LineSegment
+from ...utils.pose import Pose
 from .sensor import Sensor
 
 MIN_READ_VALUE = 18

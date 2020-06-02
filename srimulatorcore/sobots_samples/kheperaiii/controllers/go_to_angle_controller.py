@@ -19,7 +19,7 @@
 
 
 
-from ....models.controllers.go_to_angle_controller import GoToAngleController
+from ....models.robot.controllers.go_to_angle_controller import GoToAngleController
 from ....utils import math_util
 
 class KheperaiiiGoToAngleController(GoToAngleController):

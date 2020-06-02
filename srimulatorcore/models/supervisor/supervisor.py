@@ -20,19 +20,19 @@
 
 
 
-from math import *
+from math import sin, cos, pi, log, radians
 
-from ..utils import linalg2_util as linalg
+from ...utils import linalg2_util as linalg
 from .control_state import ControlState
-from .pose import Pose
+from ...utils.pose import Pose
 from .supervisor_controller_interface import SupervisorControllerInterface
 from .supervisor_state_machine import SupervisorStateMachine
 
-from .controllers.avoid_obstacles_controller import AvoidObstaclesController
-from .controllers.follow_wall_controller import FollowWallController
-from .controllers.go_to_angle_controller import GoToAngleController
-from .controllers.go_to_goal_controller import GoToGoalController
-from .controllers.gtg_and_ao_controller import GTGAndAOController
+from ..robot.controllers.avoid_obstacles_controller import AvoidObstaclesController
+from ..robot.controllers.follow_wall_controller import FollowWallController
+from ..robot.controllers.go_to_angle_controller import GoToAngleController
+from ..robot.controllers.go_to_goal_controller import GoToGoalController
+from ..robot.controllers.gtg_and_ao_controller import GTGAndAOController
 
 # control parameters
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s

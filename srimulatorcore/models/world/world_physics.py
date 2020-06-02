@@ -17,9 +17,9 @@
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
-from ..utils import geometrics_util as geometrics
+from ...utils import geometrics_util as geometrics
 
-from ..sim_exceptions.collision_exception import *
+from ...sim_exceptions.collision_exception import CollisionException
 
 class Physics():
 

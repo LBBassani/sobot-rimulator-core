@@ -21,7 +21,7 @@
 from ...utils import linalg2_util as linalg
 
 
-from ...models.control_state import ControlState
+from ...models.supervisor.control_state import ControlState
 
 VECTOR_LEN = 0.75 # length of heading vector
 
@@ -51,7 +51,7 @@ class FollowWallControllerView:
     self._draw_follow_wall_controller_to_frame_by_side( FWDIR_RIGHT )
 
   # draw the controller to the frame for the indicated side only 
-  def _draw_follow_wall_controller_to_frame_by_side( self, side ):
+  def _draw_follow_wall_controller_to_frame_by_side( self, side , draw_perpendicular_component = False , draw_parallel_component = False):
     if side == FWDIR_LEFT:
       surface_line = self.follow_wall_controller.l_wall_surface
       distance_vector = self.follow_wall_controller.l_distance_vector
@@ -84,20 +84,22 @@ class FollowWallControllerView:
                                           alpha = 1.0 )
 
     # # draw the perpendicular component vector
-    # perpendicular_component_line = [ [ 0.0, 0.0 ], perpendicular_component ]
-    # perpendicular_component_line = linalg.rotate_and_translate_vectors( perpendicular_component_line, robot_theta, robot_pos )
-    # self.viewer.current_frame.add_lines(  [ perpendicular_component_line ],
-    #                                       linewidth = 0.01,
-    #                                       color = "blue",
-    #                                       alpha = 0.8 )
+    if draw_perpendicular_component:
+      perpendicular_component_line = [ [ 0.0, 0.0 ], perpendicular_component ]
+      perpendicular_component_line = linalg.rotate_and_translate_vectors( perpendicular_component_line, robot_theta, robot_pos )
+      self.viewer.current_frame.add_lines(  [ perpendicular_component_line ],
+                                            linewidth = 0.01,
+                                            color = "blue",
+                                            alpha = 0.8 )
 
     # # draw the parallel component vector
-    # parallel_component_line = [ [ 0.0, 0.0 ], parallel_component ]
-    # parallel_component_line = linalg.rotate_and_translate_vectors( parallel_component_line, robot_theta, robot_pos )
-    # self.viewer.current_frame.add_lines(  [ parallel_component_line ],
-    #                                       linewidth = 0.01,
-    #                                       color = "red",
-    #                                       alpha = 0.8 )
+    if draw_parallel_component:
+      parallel_component_line = [ [ 0.0, 0.0 ], parallel_component ]
+      parallel_component_line = linalg.rotate_and_translate_vectors( parallel_component_line, robot_theta, robot_pos )
+      self.viewer.current_frame.add_lines(  [ parallel_component_line ],
+                                            linewidth = 0.01,
+                                            color = "red",
+                                            alpha = 0.8 )
 
     # draw the computed follow-wall vector
     fw_heading_vector = linalg.scale( linalg.unit( fw_heading_vector ), VECTOR_LEN )

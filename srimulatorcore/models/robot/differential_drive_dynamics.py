@@ -18,7 +18,7 @@
 
 
 from math import sin, cos, pi
-from .pose import Pose
+from ...utils.pose import Pose
 
 class DifferentialDriveDynamics:
   

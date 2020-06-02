@@ -26,8 +26,8 @@ FWDIR_RIGHT = 1
 
 from math import atan2
 
-from ....models.control_state import *
-from ....models.controllers.follow_wall_controller import FollowWallController
+from ....models.supervisor.control_state import *
+from ....models.robot.controllers.follow_wall_controller import FollowWallController
 from ....utils import linalg2_util as linalg
 from ....sim_exceptions.goal_reached_exception import GoalReachedException
 

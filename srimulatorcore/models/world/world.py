@@ -21,7 +21,7 @@
 
 
 import time
-from .physics import Physics
+from .world_physics import Physics
 
 class World:
 
