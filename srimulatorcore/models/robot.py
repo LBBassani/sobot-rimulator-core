@@ -16,6 +16,7 @@
 # 
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
+from .pose import Pose
 
 class Robot:
 
