@@ -1,0 +1,9 @@
+from ....views.controllers_view import ControllerView
+from .controllers_views.avoid_obstacles_controller_view import AvoidObstaclesControllerView
+from .controllers_views.follow_wall_controller_view import FollowWallControllerView
+from .controllers_views.go_to_goal_controller_view import GoToGoalControllerView
+from .controllers_views.gtg_and_ao_controller_view import GTGAndAOControllerView
+from ..supervisor.supervisor import KheperaiiiAvoidObstaclesController, KheperaiiiFollowWallController, KheperaiiiGoToAngleController, KheperaiiiGoToGoalController, KheperaiiiGTGAndAOController
+
+class KhepariiiControllerView(ControllerView):
+    pass

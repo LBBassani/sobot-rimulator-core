@@ -19,11 +19,11 @@
 
 from math import atan2
 
-from ....models.robot.controllers.go_to_goal_controller import GoToGoalController
+from ....models.robot.controller import Controller
 from ....utils import linalg2_util as linalg
 from ....utils import math_util
 
-class KheperaiiiGoToGoalController(GoToGoalController):
+class KheperaiiiGoToGoalController(Controller):
 
   def __init__( self, supervisor ):
     # bind the supervisor
@@ -70,7 +70,7 @@ class KheperaiiiGoToGoalController(GoToGoalController):
     self.prev_eP = eP
     self.prev_eI = eI
 
-    self.supervisor.set_outputs( v, omega )
+    self.supervisor.set_outputs( v = v, omega = omega )
 
     # === FOR DEBUGGING ===
     # self._print_vars( eP, eI, eD, v, omega )

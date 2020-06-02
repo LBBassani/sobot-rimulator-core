@@ -16,32 +16,43 @@
 # 
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
+from ....models.supervisor.supervisor_controller_interface import SupervisorControllerInterface
+from ....models.sensors.proximity_sensor import ProximitySensor
 
 # an interfacing allowing a controller to interact with its supervisor 
-class SupervisorControllerInterface:
+class KheperaiiiSupervisorControllerInterface(SupervisorControllerInterface):
 
   def __init__( self, supervisor ):
     self.supervisor = supervisor
 
   # get the current control state
   def current_state( self ):
-    raise(NotImplementedError)
+    return self.supervisor.state_machine.current_state
 
   # get the supervisor's internal pose estimation
   def estimated_pose( self ):
-    raise(NotImplementedError)
+    return self.supervisor.estimated_pose
 
   # get the placement poses of the robot's sensors
-  def sensor_placements( self , sensor):
-    raise(NotImplementedError)
+  def proximity_sensor_placements( self ):
+    return self.supervisor.proximity_sensor_placements
+
+  # get the robot's proximity sensor read values converted to real distances in meters
+  def proximity_sensor_distances( self ):
+    return self.supervisor.proximity_sensor_distances
+
+  # get true/false indicators for which sensors are actually detecting obstacles
+  def proximity_sensor_positive_detections( self ):
+    sensor_range = self.supervisor.proximity_sensor_max_range
+    return [ d < sensor_range - 0.001 for d in self.proximity_sensor_distances() ]
 
   # get the velocity limit of the supervisor
   def v_max( self ):
-    raise(NotImplementedError)
+    return self.supervisor.v_max
 
   # get the supervisor's goal
   def goal( self ):
-    raise(NotImplementedError)
+    return self.supervisor.goal
 
   # get the supervisor's internal clock time
   def time( self ):
@@ -49,4 +60,12 @@ class SupervisorControllerInterface:
 
   # set the outputs of the supervisor
   def set_outputs( self, **kwargs ):
-    raise(NotImplementedError)
+    self.supervisor.v_output = kwargs.get('v')
+    self.supervisor.omega_output = kwargs.get('omega')
+
+  # get the placement poses of the robot's sensors
+  def sensor_placements( self , sensor):
+    if type(sensor) is ProximitySensor:
+      return self.proximity_sensor_placements()
+    else :
+      raise Exception(" Not valid Sensor Type")

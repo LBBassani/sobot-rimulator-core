@@ -20,7 +20,7 @@
 
 
 
-from ...utils import linalg2_util as linalg
+from .....utils import linalg2_util as linalg
 
 VECTOR_LEN = 0.75 # length of heading vector
 

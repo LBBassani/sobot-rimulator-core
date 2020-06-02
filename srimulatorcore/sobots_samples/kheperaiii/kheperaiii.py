@@ -25,13 +25,12 @@ from ...utils.pose import Pose
 from ...models.sensors.wheel_encoder import WheelEncoder
 from ...models.sensors.proximity_sensor import ProximitySensor
 
-from ...models.supervisor.robot_supervisor_interface import RobotSupervisorInterface
-from ...models.supervisor.supervisor import Supervisor
+from .supervisor.robot_supervisor_interface import KheperaiiiRobotSupervisorInterface
+from .supervisor.supervisor import KheperaiiiSupervisor
 
 from ...models.robot.differential_drive_dynamics import DifferentialDriveDynamics
 from ...models.robot.robot import Robot
 
-from .controllers import *
 
 # Khepera III Properties
 K3_WHEEL_RADIUS = 0.021         # meters
@@ -105,14 +104,14 @@ class Kheperaiii(Robot): # Khepera III robot
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
 
     # supervisor
-    controllers = dict()
+    """ controllers = dict()
     controllers["GoToAngleController"] = KheperaiiiGoToAngleController
     controllers["GoToGoalController"] = KheperaiiiGoToGoalController
     controllers["AvoidObstaclesController"] = KheperaiiiAvoidObstaclesController
     controllers["GTGAndAOController"] = KheperaiiiGTGAndAOController
-    controllers["FollowWallController"] = KheperaiiiFollowWallController
-    self.supervisor = Supervisor( RobotSupervisorInterface( self ),
-                                  K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH, K3_WHEEL_TICKS_PER_REV, K3_SENSOR_POSES, K3_SENSOR_MAX_RANGE, controllers)
+    controllers["FollowWallController"] = KheperaiiiFollowWallController """
+    self.supervisor = KheperaiiiSupervisor( KheperaiiiRobotSupervisorInterface( self ),
+                                  K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH, K3_WHEEL_TICKS_PER_REV, K3_SENSOR_POSES, K3_SENSOR_MAX_RANGE)
     
     ## initialize state
     # set wheel drive rates (rad/s)

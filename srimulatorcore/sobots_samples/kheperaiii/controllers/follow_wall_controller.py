@@ -26,12 +26,12 @@ FWDIR_RIGHT = 1
 
 from math import atan2
 
-from ....models.supervisor.control_state import *
-from ....models.robot.controllers.follow_wall_controller import FollowWallController
+from ....models.robot.controller import Controller
+from ..supervisor.supervisor import ControlState
 from ....utils import linalg2_util as linalg
 from ....sim_exceptions.goal_reached_exception import GoalReachedException
 
-class KheperaiiiFollowWallController(FollowWallController):
+class KheperaiiiFollowWallController(Controller):
 
   def __init__( self, supervisor ):
     # bind the supervisor
@@ -114,7 +114,7 @@ class KheperaiiiFollowWallController(FollowWallController):
     self.prev_eP = eP
     self.prev_eI = eI
 
-    self.supervisor.set_outputs( v, omega )
+    self.supervisor.set_outputs( v = v, omega = omega )
 
     # === FOR DEBUGGING ===
     # self._print_vars( eP, eI, eD, v, omega )
