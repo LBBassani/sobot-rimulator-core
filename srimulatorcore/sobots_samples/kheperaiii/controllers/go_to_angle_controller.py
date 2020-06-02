@@ -18,11 +18,10 @@
 
 
 
-
-from ....models.robot.controllers.go_to_angle_controller import GoToAngleController
+from ....models.robot.controller import Controller
 from ....utils import math_util
 
-class KheperaiiiGoToAngleController(GoToAngleController):
+class KheperaiiiGoToAngleController(Controller):
 
   def __init__( self, supervisor ):
     # bind the supervisor

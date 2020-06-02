@@ -19,12 +19,12 @@
 
 from math import atan2, pi
 
-from ....models.robot.controllers.gtg_and_ao_controller import GTGAndAOController
+from ....models.robot.controller import Controller
 from ....utils import linalg2_util as linalg
 from .avoid_obstacles_controller import KheperaiiiAvoidObstaclesController
 from .go_to_goal_controller import KheperaiiiGoToGoalController
 
-class KheperaiiiGTGAndAOController(GTGAndAOController):
+class KheperaiiiGTGAndAOController(Controller):
 
   def __init__( self, supervisor ):
     # bind the supervisor

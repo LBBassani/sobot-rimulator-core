@@ -19,13 +19,12 @@
 from math import atan2, pi
 
 from ....models.robot.controller import Controller
-from ....models.robot.controllers.avoid_obstacles_controller import AvoidObstaclesController
 from ....utils import linalg2_util as linalg
 from ....utils import math_util
 
 from ..views.controllers_views.avoid_obstacles_controller_view import AvoidObstaclesControllerView
 
-class KheperaiiiAvoidObstaclesController(Controller, AvoidObstaclesController):
+class KheperaiiiAvoidObstaclesController(Controller):
 
   def __init__( self, supervisor ):
     # bind the supervisor

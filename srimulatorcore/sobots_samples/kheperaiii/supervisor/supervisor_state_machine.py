@@ -65,7 +65,6 @@ class KheperaiiiSupervisorStateMachine(SupervisorStateMachine):
 
   # === STATE PROCEDURES ===
   def execute_state( self , state):
-    self._print_debug_info()
     if state == ControlState.AT_GOAL : self.execute_state_go_to_goal()
     elif state == ControlState.AVOID_OBSTACLES : self.execute_state_avoid_obstacles()
     elif state == ControlState.GO_TO_GOAL : self.execute_state_go_to_goal()
