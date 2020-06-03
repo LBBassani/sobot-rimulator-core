@@ -113,7 +113,7 @@ class Rimulator:
     
   def draw_world( self ):
     self.viewer.new_frame()                 # start a fresh frame
-    self.world_view.draw_world_to_frame()   # draw the world onto the frame
+    self.world_view.draw_world_to_frame(self.world.robots[0].pose.vposition())   # draw the world onto the frame
     self.viewer.draw_frame()                # render the frame
     
     

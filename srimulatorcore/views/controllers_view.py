@@ -6,7 +6,7 @@ class ControllerView():
         self.viewer = viewer
         self.supervisor = supervisor
   
-    def draw_controller_to_frame( self , controller):
+    def draw_controller_to_frame( self , controller, ref_pose = [0.0, 0.0]):
         raise(NotImplementedError)
     
 

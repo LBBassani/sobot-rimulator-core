@@ -29,11 +29,14 @@ class ProximitySensorView:
     self.viewer = viewer
     self.proximity_sensor = proximity_sensor
 
-  def draw_proximity_sensor_to_frame( self ):
+  def draw_sensor_to_frame( self, ref_pose = [0.0, 0.0] ):
     proximity_sensor = self.proximity_sensor
 
     # grab proximity sensor pose values
     sensor_pos, sensor_theta = proximity_sensor.pose.vunpack()
+    sensor_pos = list(sensor_pos)
+    sensor_pos[0] = sensor_pos[0] - ref_pose[0]
+    sensor_pos[1] = sensor_pos[1] - ref_pose[1]
 
     # build the sensor cone
     r = proximity_sensor.max_range
@@ -63,34 +66,39 @@ class ProximitySensorView:
     # self._draw_bounding_circle_to_frame()
     # self._draw_detection_to_frame()
 
-  def _draw_detection_to_frame( self ):
+  def _draw_detection_to_frame( self , ref_pose = [0.0, 0.0]):
     target_delta = self.proximity_sensor.target_delta
     if target_delta != None:
       detector_endpoints = self.proximity_sensor.detector_line.vertexes
       detector_vector = linalg.sub( detector_endpoints[1], detector_endpoints[0] )
       target_vector = linalg.add( detector_endpoints[0], linalg.scale( detector_vector, target_delta ) )
       
+      target_vector[0] = target_vector[0] - ref_pose[0]
+      target_vector[1] = target_vector[1] - ref_pose[1]
       self.viewer.current_frame.add_circle( pos = target_vector,
                                             radius = 0.02,
                                             color = "black",
                                             alpha = 0.7 )
   
-  def _draw_detector_line_to_frame( self ):
-    vertexes = self.proximity_sensor.detector_line.vertexes
-
+  def _draw_detector_line_to_frame( self , ref_pose = [0.0, 0.0]):
+    vertexes = list(self.proximity_sensor.detector_line.vertexes)
+    vertexes = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vertexes ) )
     self.viewer.current_frame.add_lines(  [ vertexes ],
                                           linewidth = 0.005,
                                           color = "black",
                                           alpha = 0.7 )
 
-  def _draw_detector_line_origins_to_frame( self ):
+  def _draw_detector_line_origins_to_frame( self , ref_pose = [0.0, 0.0]):
     origin = self.proximity_sensor.detector_line.vertexes[0]
-    self.viewer.current_frame.add_circle( pos = (origin[0], origin[1]),
+    self.viewer.current_frame.add_circle( pos = (origin[0] - ref_pose[0], origin[1] - ref_pose[1]),
                                           radius = 0.02,
                                           color = "black" )
 
-  def _draw_bounding_circle_to_frame( self ):
+  def _draw_bounding_circle_to_frame( self , ref_pose = [0.0, 0.0]):
     c, r = self.proximity_sensor.detector_line.bounding_circle
+    c = list(c)
+    c[0] = c[0] - ref_pose[0]
+    c[1] = c[1] - ref_pose[1]
     self.viewer.current_frame.add_circle( pos = c,
                                           radius = r,
                                           color = "black",

@@ -28,11 +28,12 @@ class ObstacleView:
     self.viewer = viewer
     self.obstacle = obstacle
 
-  def draw_obstacle_to_frame( self ):
+  def draw_obstacle_to_frame( self , ref_pose = [0.0, 0.0]):
     obstacle = self.obstacle
 
     # draw the obstacle to the frame
-    obstacle_poly = obstacle.global_geometry.vertexes
+    obstacle_poly = list(obstacle.global_geometry.vertexes)
+    obstacle_poly = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , obstacle_poly ) )
     self.viewer.current_frame.add_polygons( [ obstacle_poly ],
                                             color = "dark red",
                                             alpha = 0.4 )
@@ -40,8 +41,11 @@ class ObstacleView:
     # === FOR DEBUGGING: ===
     # self._draw_bounding_circle_to_frame()
 
-  def _draw_bounding_circle_to_frame( self ):
+  def _draw_bounding_circle_to_frame( self , ref_pose = [0.0, 0.0]):
     c, r = self.obstacle.global_geometry.bounding_circle
+    c = list(c)
+    c[0] = c[0] - ref_pose[0]
+    c[1] = c[1] - ref_pose[1]
     self.viewer.current_frame.add_circle( pos = c,
                                           radius = r,
                                           color = "black",

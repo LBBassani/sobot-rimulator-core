@@ -32,12 +32,14 @@ class GoToGoalControllerView:
     self.go_to_goal_controller = supervisor.go_to_goal_controller
 
   # draw a representation of the go-to-goal controller's internal state to the frame
-  def draw_go_to_goal_controller_to_frame( self ):
+  def draw_go_to_goal_controller_to_frame( self , ref_pose = [0.0, 0.0]):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    
+    robot_pos[0] = robot_pos[0] - ref_pose[0]
+    robot_pos[1] = robot_pos[1] - ref_pose[1]
     # draw the computed go-to-goal vector
     gtg_heading_vector = linalg.scale( linalg.unit( self.go_to_goal_controller.gtg_heading_vector ), VECTOR_LEN )
-    vector_line = [ [ 0.0, 0.0 ], gtg_heading_vector ]
+    vector_line = [ ref_pose , gtg_heading_vector ]
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
