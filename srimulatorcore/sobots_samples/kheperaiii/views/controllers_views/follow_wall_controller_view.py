@@ -68,23 +68,22 @@ class FollowWallControllerView:
     else: raise Exception( "unrecognized argument: follow-wall direction indicator" )
 
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    robot_pos[0] = robot_pos[0] - ref_pose[0]
-    robot_pos[1] = robot_pos[1] - ref_pose[1]
+    """ robot_pos[0] = robot_pos[0] - ref_pose[0]
+    robot_pos[1] = robot_pos[1] - ref_pose[1] """
 
     # draw the estimated wall surface
     surface_line = list(surface_line)
-    surface_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , surface_line ) )
     surface_line = linalg.rotate_and_translate_vectors( surface_line, robot_theta, robot_pos )
+    surface_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , surface_line ) )
     self.viewer.current_frame.add_lines(  [ surface_line ],
                                           linewidth = 0.01,
                                           color = "black",
                                           alpha = 1.0 )
 
     # draw the measuring line from the robot to the wall
-    range_line = [ ref_pose , distance_vector ]
-    range_line = list(range_line)
+    range_line = [ [0.0, 0.0] , distance_vector ]
+    range_line = linalg.rotate_and_translate_vectors(range_line, robot_theta, robot_pos)
     range_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , range_line ) )
-    range_line = linalg.rotate_and_translate_vectors( range_line, robot_theta, robot_pos )
     self.viewer.current_frame.add_lines(  [ range_line ],
                                           linewidth = 0.005,
                                           color = "black",
@@ -92,10 +91,9 @@ class FollowWallControllerView:
 
     # # draw the perpendicular component vector
     if draw_perpendicular_component:
-      perpendicular_component_line = [ ref_pose , perpendicular_component ]
-      perpendicular_component_line = list(perpendicular_component_line)
+      perpendicular_component_line = [ [0.0, 0.0] , perpendicular_component ]
+      perpendicular_component_line = linalg.rotate_and_translate_vectors(perpendicular_component_line, robot_theta, robot_pos)
       perpendicular_component_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , perpendicular_component_line ) )
-      perpendicular_component_line = linalg.rotate_and_translate_vectors( perpendicular_component_line, robot_theta, robot_pos )
       self.viewer.current_frame.add_lines(  [ perpendicular_component_line ],
                                             linewidth = 0.01,
                                             color = "blue",
@@ -103,10 +101,9 @@ class FollowWallControllerView:
 
     # # draw the parallel component vector
     if draw_parallel_component:
-      parallel_component_line = [ ref_pose , parallel_component ]
-      parallel_component_line = list(parallel_component_line)
-      parallel_component_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , parallel_component_line ) )
+      parallel_component_line = [ [0.0,0.0] , parallel_component ]
       parallel_component_line = linalg.rotate_and_translate_vectors( parallel_component_line, robot_theta, robot_pos )
+      parallel_component_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , parallel_component_line ) )
       self.viewer.current_frame.add_lines(  [ parallel_component_line ],
                                             linewidth = 0.01,
                                             color = "red",
@@ -114,10 +111,9 @@ class FollowWallControllerView:
 
     # draw the computed follow-wall vector
     fw_heading_vector = linalg.scale( linalg.unit( fw_heading_vector ), VECTOR_LEN )
-    vector_line = [ ref_pose , fw_heading_vector ]
-    vector_line = list(vector_line)
-    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
+    vector_line = [ [0.0, 0.0] , fw_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
                                          color = "orange",

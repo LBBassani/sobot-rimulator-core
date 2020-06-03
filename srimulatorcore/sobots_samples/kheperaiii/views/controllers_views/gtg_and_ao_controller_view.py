@@ -32,14 +32,13 @@ class GTGAndAOControllerView:
   # draw a representation of the blended controller's internal state to the frame
   def draw_gtg_and_ao_controller_to_frame( self , ref_pose = [0.0, 0.0]):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    robot_pos[0] = robot_pos[0] - ref_pose[0]
-    robot_pos[1] = robot_pos[1] - ref_pose[1]
+
 
     # draw the detected environment boundary (i.e. sensor readings)
     obstacle_vertexes = self.gtg_and_ao_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
-    obstacle_vertexes = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , obstacle_vertexes ) )
     obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
+    obstacle_vertexes = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , obstacle_vertexes ) )
     self.viewer.current_frame.add_lines(  [ obstacle_vertexes ],
                                           linewidth = 0.005,
                                           color = "black",
@@ -47,9 +46,9 @@ class GTGAndAOControllerView:
 
     # draw the computed avoid-obstacles vector
     ao_heading_vector = linalg.scale( linalg.unit( self.gtg_and_ao_controller.ao_heading_vector ), VECTOR_LEN )
-    vector_line = [ ref_pose , ao_heading_vector ]
-    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
+    vector_line = [ [0.0, 0.0] , ao_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.005,
                                          color = "red",
@@ -57,9 +56,9 @@ class GTGAndAOControllerView:
 
     # draw the computed go-to-goal vector
     gtg_heading_vector = linalg.scale( linalg.unit( self.gtg_and_ao_controller.gtg_heading_vector ), VECTOR_LEN )
-    vector_line = [ ref_pose , gtg_heading_vector ]
-    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
+    vector_line = [ [0.0, 0.0] , gtg_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
 
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.005,
@@ -68,9 +67,9 @@ class GTGAndAOControllerView:
 
     # draw the computed blended vector
     blended_heading_vector = linalg.scale( linalg.unit( self.gtg_and_ao_controller.blended_heading_vector ), VECTOR_LEN )
-    vector_line = [ ref_pose , blended_heading_vector ]
-    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
+    vector_line = [ [0.0, 0.0] , blended_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
                                          color = "blue",

@@ -33,14 +33,12 @@ class AvoidObstaclesControllerView:
   def draw_avoid_obstacles_controller_to_frame( self , ref_pose = [0.0, 0.0]):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
     robot_pos = list(robot_pos)
-    robot_pos[0] = robot_pos[0] - ref_pose[0]
-    robot_pos[1] = robot_pos[1] - ref_pose[1]
 
     # draw the detected environment boundary (i.e. sensor readings)
     obstacle_vertexes = self.avoid_obstacles_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
-    obstacle_vertexes = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , obstacle_vertexes ) )
     obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
+    obstacle_vertexes = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , obstacle_vertexes ) )
     self.viewer.current_frame.add_lines(  [ obstacle_vertexes ],
                                           linewidth = 0.005,
                                           color = "black",
@@ -48,9 +46,9 @@ class AvoidObstaclesControllerView:
 
     # draw the computed avoid-obstacles vector
     ao_heading_vector = list(linalg.scale( linalg.unit( self.avoid_obstacles_controller.ao_heading_vector ), VECTOR_LEN ))
-    vector_line = [ ref_pose , ao_heading_vector ]
-    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
+    vector_line = [ [0.0, 0.0] , ao_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
                                          color = "red",
