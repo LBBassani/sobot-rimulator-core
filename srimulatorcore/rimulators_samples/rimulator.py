@@ -18,26 +18,17 @@
 # Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
 
-import pygtk
-pygtk.require( '2.0' )
-import gtk
-import gobject
-
 # import default robot kherepa III
-from .sobots_samples.kheperaiii.kheperaiii import Kheperaiii
+from ..sobots_samples.kheperaiii.kheperaiii import Kheperaiii
 
-# import gui classes
-from .gui.viewer import Viewer
-from .gui.frame import Frame
+from ..models.map.map_manager import MapManager
+from ..models.robot.robot import Robot
+from ..models.world.world import World
 
-from .models.map.map_manager import MapManager
-from .models.robot.robot import Robot
-from .models.world.world import World
+from ..views.world_view import WorldView
 
-from .views.world_view import WorldView
-
-from .sim_exceptions.collision_exception import CollisionException
-from .sim_exceptions.goal_reached_exception import GoalReachedException
+from ..sim_exceptions.collision_exception import CollisionException
+from ..sim_exceptions.goal_reached_exception import GoalReachedException
 
 REFRESH_RATE = 20.0 # hertz
 
@@ -48,8 +39,7 @@ class Rimulator:
     self.is_running = False
     self.robot_types = robot_types
 
-    # create the GUI
-    self.viewer = Viewer( self )
+    self.viewer = None
     
     # create the map manager
     self.map_manager = MapManager()
@@ -57,14 +47,8 @@ class Rimulator:
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
     
-    # gtk simulation event source - for simulation control
-    self.sim_event_source = gobject.idle_add( self.initialize_sim, True ) # we use this opportunity to initialize the sim
-    
-    
     
   def initialize_sim( self, random=False ):
-    # reset the viewer
-    self.viewer.control_panel_state_init()
     
     # create the simulation world
     self.world = World( self.period )
@@ -79,6 +63,8 @@ class Rimulator:
     else:
       self.map_manager.apply_to_world( self.world )
     
+    if self.viewer is None:
+      raise Exception("No viewer assigned")
     # create the world view
     self.world_view = WorldView( self.world, self.viewer )
     
@@ -87,28 +73,22 @@ class Rimulator:
     
     
   def play_sim( self ):
-    self.is_running = True
-    self._run_sim()
-    self.viewer.control_panel_state_playing()
-    
+    self.is_running = True  
     
   def pause_sim( self ):
     if self.is_running:
       self.is_running = False
-      gobject.source_remove( self.sim_event_source )
-      self.viewer.control_panel_state_paused()
-    
+      return True
+    return False   
     
   def step_sim_once( self ):
     if self.is_running:
       self.pause_sim()
-    self._step_sim()
+    self.step_sim()
     
     
   def end_sim( self, alert_text='' ):
     self.is_running = False
-    gobject.source_remove( self.sim_event_source )
-    self.viewer.control_panel_state_finished( alert_text )
     
     
   def reset_sim( self ):
@@ -130,18 +110,11 @@ class Rimulator:
     self.initialize_sim( random = True )
     
     
-  def draw_world( self ):
-    self.viewer.new_frame()                 # start a fresh frame
-    self.world_view.draw_world_to_frame(self.world.robots[0].pose.vposition())   # draw the world onto the frame
-    self.viewer.draw_frame()                # render the frame
-    
-    
-  def _run_sim( self ):
-    self.sim_event_source = gobject.timeout_add( int( self.period * 1000 ), self._run_sim )
-    self._step_sim()
-    
-    
-  def _step_sim( self ):
+  def draw_world( self ):                # start a fresh frame
+    self.world_view.draw_world_to_frame(self.world.robots[0].pose.vposition())   # draw the world onto the frame    
+
+
+  def step_sim( self ):
     # increment the simulation
     try:
       self.world.step()
@@ -149,13 +122,7 @@ class Rimulator:
       self.end_sim( 'Collision!' )
     except GoalReachedException:
       self.end_sim( 'Goal Reached!' )
-      
-    # draw the resulting world
-    self.draw_world()
-
-  def start_sobot_rimulator(self):
-    # start gtk
-    gtk.main()
+    
 
   def update_robot(self , robot_type):
     robot, rposition = robot_type
@@ -165,3 +132,6 @@ class Rimulator:
   
   def add_robot(self, robot_type):
     self.robot_types.append(robot_type)
+
+  def add_viewer(self, viewer):
+    self.viewer = viewer
