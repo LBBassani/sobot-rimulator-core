@@ -1,5 +1,6 @@
-# Sobot Rimulator - A Robot Programming Tool
+# Sobot Rimulator - A Robot Programming Tool (Modified Version)
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
+# Modified by Lorena B. Bassani
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
+# Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
 
 
@@ -36,22 +37,22 @@ class FollowWallControllerView:
     self.follow_wall_controller = supervisor.follow_wall_controller
 
   # draw a representation of the currently-active side of the follow-wall controller state to the frame
-  def draw_active_follow_wall_controller_to_frame( self ):
+  def draw_active_follow_wall_controller_to_frame( self , ref_pose = [0.0, 0.0]):
     # determine which side to renderi
     current_state = self.supervisor.state_machine.current_state
     if current_state == ControlState.SLIDE_LEFT:
-      self._draw_follow_wall_controller_to_frame_by_side( FWDIR_LEFT )
+      self._draw_follow_wall_controller_to_frame_by_side( FWDIR_LEFT , ref_pose )
     elif current_state == ControlState.SLIDE_RIGHT:
-      self._draw_follow_wall_controller_to_frame_by_side( FWDIR_RIGHT )
+      self._draw_follow_wall_controller_to_frame_by_side( FWDIR_RIGHT , ref_pose )
     else: raise Exception( "applying follow-wall controller when not in a sliding state currently not supported" )
 
   # draw a representation of both sides of the follow-wall controller to the frame
-  def draw_complete_follow_wall_controller_to_frame( self ):
-    self._draw_follow_wall_controller_to_frame_by_side( FWDIR_LEFT )
-    self._draw_follow_wall_controller_to_frame_by_side( FWDIR_RIGHT )
+  def draw_complete_follow_wall_controller_to_frame( self , ref_pose = [0.0, 0.0] ):
+    self._draw_follow_wall_controller_to_frame_by_side( FWDIR_LEFT , ref_pose )
+    self._draw_follow_wall_controller_to_frame_by_side( FWDIR_RIGHT , ref_pose )
 
   # draw the controller to the frame for the indicated side only 
-  def _draw_follow_wall_controller_to_frame_by_side( self, side , draw_perpendicular_component = False , draw_parallel_component = False):
+  def _draw_follow_wall_controller_to_frame_by_side( self, side , ref_pose = [0.0, 0.0], draw_perpendicular_component = False , draw_parallel_component = False):
     if side == FWDIR_LEFT:
       surface_line = self.follow_wall_controller.l_wall_surface
       distance_vector = self.follow_wall_controller.l_distance_vector
@@ -67,17 +68,22 @@ class FollowWallControllerView:
     else: raise Exception( "unrecognized argument: follow-wall direction indicator" )
 
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
+    """ robot_pos[0] = robot_pos[0] - ref_pose[0]
+    robot_pos[1] = robot_pos[1] - ref_pose[1] """
 
     # draw the estimated wall surface
+    surface_line = list(surface_line)
     surface_line = linalg.rotate_and_translate_vectors( surface_line, robot_theta, robot_pos )
+    surface_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , surface_line ) )
     self.viewer.current_frame.add_lines(  [ surface_line ],
                                           linewidth = 0.01,
                                           color = "black",
                                           alpha = 1.0 )
 
     # draw the measuring line from the robot to the wall
-    range_line = [ [ 0.0, 0.0 ], distance_vector ]
-    range_line = linalg.rotate_and_translate_vectors( range_line, robot_theta, robot_pos )
+    range_line = [ [0.0, 0.0] , distance_vector ]
+    range_line = linalg.rotate_and_translate_vectors(range_line, robot_theta, robot_pos)
+    range_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , range_line ) )
     self.viewer.current_frame.add_lines(  [ range_line ],
                                           linewidth = 0.005,
                                           color = "black",
@@ -85,8 +91,9 @@ class FollowWallControllerView:
 
     # # draw the perpendicular component vector
     if draw_perpendicular_component:
-      perpendicular_component_line = [ [ 0.0, 0.0 ], perpendicular_component ]
-      perpendicular_component_line = linalg.rotate_and_translate_vectors( perpendicular_component_line, robot_theta, robot_pos )
+      perpendicular_component_line = [ [0.0, 0.0] , perpendicular_component ]
+      perpendicular_component_line = linalg.rotate_and_translate_vectors(perpendicular_component_line, robot_theta, robot_pos)
+      perpendicular_component_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , perpendicular_component_line ) )
       self.viewer.current_frame.add_lines(  [ perpendicular_component_line ],
                                             linewidth = 0.01,
                                             color = "blue",
@@ -94,8 +101,9 @@ class FollowWallControllerView:
 
     # # draw the parallel component vector
     if draw_parallel_component:
-      parallel_component_line = [ [ 0.0, 0.0 ], parallel_component ]
+      parallel_component_line = [ [0.0,0.0] , parallel_component ]
       parallel_component_line = linalg.rotate_and_translate_vectors( parallel_component_line, robot_theta, robot_pos )
+      parallel_component_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , parallel_component_line ) )
       self.viewer.current_frame.add_lines(  [ parallel_component_line ],
                                             linewidth = 0.01,
                                             color = "red",
@@ -103,8 +111,9 @@ class FollowWallControllerView:
 
     # draw the computed follow-wall vector
     fw_heading_vector = linalg.scale( linalg.unit( fw_heading_vector ), VECTOR_LEN )
-    vector_line = [ [ 0.0, 0.0 ], fw_heading_vector ]
+    vector_line = [ [0.0, 0.0] , fw_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
                                          color = "orange",

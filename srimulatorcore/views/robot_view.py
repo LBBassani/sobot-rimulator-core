@@ -1,5 +1,6 @@
-# Sobot Rimulator - A Robot Programming Tool
+# Sobot Rimulator - A Robot Programming Tool (Modified Version)
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
+# Modified by Lorena B. Bassani
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
+# Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
 
 from ..utils import linalg2_util as linalg
@@ -38,42 +39,45 @@ class RobotView:
 
     self.traverse_path = []  # this robot's traverse path
 
-  def draw_robot_to_frame( self ):
+  def draw_robot_to_frame( self , ref_pose = [0.0, 0.0]):
     # update the robot traverse path
     position = self.robot.pose.vposition()
     self.traverse_path.append( position )
     
     # draw the internal state ( supervisor ) to the frame
-    self.supervisor_view.draw_supervisor_to_frame()
+    self.supervisor_view.draw_supervisor_to_frame( ref_pose )
 
     # draw the IR sensors to the frame if indicated
     if self.viewer.draw_invisibles:
       for ir_sensor_view in self.ir_sensor_views:
-        ir_sensor_view.draw_proximity_sensor_to_frame()
+        ir_sensor_view.draw_sensor_to_frame( ref_pose )
 
     # draw the robot
-    robot_bottom = self.robot.global_geometry.vertexes
+    robot_bottom = list(self.robot.global_geometry.vertexes)
+    robot_bottom = list ( map (lambda x : [x[0] - ref_pose[0] , x[1] - ref_pose[1] ] , robot_bottom ) )
     self.viewer.current_frame.add_polygons( [ robot_bottom ],
                                             color = "blue",
                                             alpha = 0.5 ) 
     # add decoration
     robot_pos, robot_theta = self.robot.pose.vunpack()
     robot_top = linalg.rotate_and_translate_vectors( self.robot.get_top_plate(), robot_theta, robot_pos )
+    robot_top = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] ,robot_top ) )
     self.viewer.current_frame.add_polygons( [ robot_top ],
                                             color = "black",
                                             alpha = 0.5 )
     
     # draw the robot's traverse path if indicated
     if self.viewer.draw_invisibles:
-      self._draw_traverse_path_to_frame()
+      self._draw_traverse_path_to_frame( ref_pose )
 
-  def _draw_traverse_path_to_frame( self ):
-    self.viewer.current_frame.add_lines(  [ self.traverse_path ],
+  def _draw_traverse_path_to_frame( self , ref_pose = [0.0, 0.0] ):
+    path = list( map( lambda x : [ x[0] - ref_pose[0] , x[1] - ref_pose[1] ] , self.traverse_path ) )
+    self.viewer.current_frame.add_lines(  [ path ],
                                           color = "black",
                                           linewidth = 0.01 )
 
   # draws the traverse path as dots weighted according to robot speed
-  def _draw_rich_traverse_path_to_frame( self ):
+  def _draw_rich_traverse_path_to_frame( self , ref_pose = [0.0, 0.0]):
     # when robot is moving fast, draw small, opaque dots
     # when robot is moving slow, draw large, transparent dots
     d_min,  d_max = 0.0, 0.01574  # possible distances between dots

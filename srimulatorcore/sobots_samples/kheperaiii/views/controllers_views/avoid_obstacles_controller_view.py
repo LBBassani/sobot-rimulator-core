@@ -1,5 +1,6 @@
-# Sobot Rimulator - A Robot Programming Tool
+# Sobot Rimulator - A Robot Programming Tool (Modified Version)
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
+# Modified by Lorena B. Bassani
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,10 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
-
-
-
+# Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
 
 from .....utils import linalg2_util as linalg
@@ -32,22 +30,25 @@ class AvoidObstaclesControllerView:
     self.avoid_obstacles_controller = supervisor.avoid_obstacles_controller
 
   # draw a representation of the avoid-obstacles controller's internal state to the frame
-  def draw_avoid_obstacles_controller_to_frame( self ):
+  def draw_avoid_obstacles_controller_to_frame( self , ref_pose = [0.0, 0.0]):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    
+    robot_pos = list(robot_pos)
+
     # draw the detected environment boundary (i.e. sensor readings)
     obstacle_vertexes = self.avoid_obstacles_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
     obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
+    obstacle_vertexes = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , obstacle_vertexes ) )
     self.viewer.current_frame.add_lines(  [ obstacle_vertexes ],
                                           linewidth = 0.005,
                                           color = "black",
                                           alpha = 1.0 )
 
     # draw the computed avoid-obstacles vector
-    ao_heading_vector = linalg.scale( linalg.unit( self.avoid_obstacles_controller.ao_heading_vector ), VECTOR_LEN )
-    vector_line = [ [ 0.0, 0.0 ], ao_heading_vector ]
+    ao_heading_vector = list(linalg.scale( linalg.unit( self.avoid_obstacles_controller.ao_heading_vector ), VECTOR_LEN ))
+    vector_line = [ [0.0, 0.0] , ao_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
                                          color = "red",

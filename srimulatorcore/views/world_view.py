@@ -1,5 +1,6 @@
-# Sobot Rimulator - A Robot Programming Tool
+# Sobot Rimulator - A Robot Programming Tool (Modified Version)
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
+# Modified by Lorena B. Bassani
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
+# Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
 
 
@@ -47,16 +48,16 @@ class WorldView:
     obstacle_view = ObstacleView( self.viewer, obstacle )
     self.obstacle_views.append( obstacle_view )
 
-  def draw_world_to_frame( self ):
+  def draw_world_to_frame( self , ref_pose = [0.0, 0.0]):
     # draw the grid
-    self._draw_grid_to_frame()
+    self._draw_grid_to_frame( )
     
     # draw all the robots
     for robot_view in self.robot_views:
-      robot_view.draw_robot_to_frame()
+      robot_view.draw_robot_to_frame( ref_pose )
     # draw all the obstacles
     for obstacle_view in self.obstacle_views:
-      obstacle_view.draw_obstacle_to_frame()
+      obstacle_view.draw_obstacle_to_frame( ref_pose )
 
   def _draw_grid_to_frame( self ):
     # NOTE: THIS FORMULA ASSUMES THE FOLLOWING:
@@ -88,8 +89,8 @@ class WorldView:
       else:
         accum = minor_lines_accum
 
-      accum.append( [ [ x, -y_halfwidth ], [ x, y_halfwidth ] ] )   # positive-side gridline
-      accum.append( [ [ -x, -y_halfwidth ], [ -x, y_halfwidth ] ] ) # negative-side gridline
+      accum.append( [ [ x, -y_halfwidth ], [ x , y_halfwidth ] ] )   # positive-side gridline
+      accum.append( [ [ -x, -y_halfwidth ], [ -x , y_halfwidth ] ] ) # negative-side gridline
 
     for j in range( y_max + 1 ):            # build the horizontal gridlines
       y = j * minor_gridline_interval
@@ -99,8 +100,8 @@ class WorldView:
       else:
         accum = minor_lines_accum
 
-      accum.append( [ [ -x_halfwidth, y ], [ x_halfwidth, y ] ] )     # positive-side gridline
-      accum.append( [ [ -x_halfwidth, -y ], [ x_halfwidth, -y ] ] )   # negative-side gridline
+      accum.append( [ [ -x_halfwidth , y ], [ x_halfwidth , y ] ] )     # positive-side gridline
+      accum.append( [ [ -x_halfwidth , -y ], [ x_halfwidth , -y ] ] )   # negative-side gridline
 
     # draw the gridlines
     self.viewer.current_frame.add_lines( major_lines_accum,                 # draw major gridlines

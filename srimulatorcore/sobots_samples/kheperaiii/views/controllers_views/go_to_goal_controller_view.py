@@ -1,5 +1,6 @@
-# Sobot Rimulator - A Robot Programming Tool
+# Sobot Rimulator - A Robot Programming Tool (Modified Version)
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
+# Modified by Lorena B. Bassani
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,10 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
-
-
-
+# Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
 
 from .....utils import linalg2_util as linalg
@@ -32,13 +30,14 @@ class GoToGoalControllerView:
     self.go_to_goal_controller = supervisor.go_to_goal_controller
 
   # draw a representation of the go-to-goal controller's internal state to the frame
-  def draw_go_to_goal_controller_to_frame( self ):
+  def draw_go_to_goal_controller_to_frame( self , ref_pose = [0.0, 0.0]):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    
+
     # draw the computed go-to-goal vector
     gtg_heading_vector = linalg.scale( linalg.unit( self.go_to_goal_controller.gtg_heading_vector ), VECTOR_LEN )
-    vector_line = [ [ 0.0, 0.0 ], gtg_heading_vector ]
+    vector_line = [ [0.0, 0.0] , gtg_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    vector_line = list( map( lambda x : [ x[0] - ref_pose[0], x[1] - ref_pose[1] ] , vector_line ) )
     self.viewer.current_frame.add_lines( [ vector_line ],
                                          linewidth = 0.02,
                                          color = "dark green",
