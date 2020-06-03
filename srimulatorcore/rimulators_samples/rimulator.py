@@ -88,7 +88,7 @@ class Rimulator:
     
     
   def end_sim( self, alert_text='' ):
-    self.is_running = False
+    self.pause_sim()
     
     
   def reset_sim( self ):
@@ -116,12 +116,7 @@ class Rimulator:
 
   def step_sim( self ):
     # increment the simulation
-    try:
-      self.world.step()
-    except CollisionException:
-      self.end_sim( 'Collision!' )
-    except GoalReachedException:
-      self.end_sim( 'Goal Reached!' )
+    self.world.step()
     
 
   def update_robot(self , robot_type):
