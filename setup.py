@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='srimulatorcore',  
-     version='0.3.3',
+     version='0.3.4',
      author="Lorena B Bassani",
      author_email="lorenabassani12@gmail.com",
      description="Core of Sobot Rimulator by Nick McCrea",
@@ -23,5 +23,5 @@ setuptools.setup(
          "Operating System :: OS Independent",
          "Development Status :: 2 - Pre-Alpha",
      ],
-     python_requires='>=2.6, <3',
+     python_requires='>=2.6',
  )
