@@ -17,7 +17,7 @@
 # 
 # Email lorenabassani12@gmail.com for questions, comments, or to report bugs.
 
-
+from .frame import Frame
 # Abstract class Viewer
 class Viewer:
   
@@ -27,8 +27,7 @@ class Viewer:
     self.current_frame = None
     
   def new_frame( self ):
-    raise(NotImplementedError)
-    
+    self.current_frame = Frame()
     
   def draw_frame( self , x = 0 , y = 0):
     raise(NotImplementedError)
