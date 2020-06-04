@@ -24,7 +24,7 @@ class Viewer:
   def __init__( self, simulator ):
     # bind the simulator
     self.simulator = simulator
-    self.draw_invisibles = False
+    self.current_frame = None
     
   def new_frame( self ):
     raise(NotImplementedError)
@@ -33,73 +33,3 @@ class Viewer:
   def draw_frame( self , x = 0 , y = 0):
     raise(NotImplementedError)
     
-    
-  def control_panel_state_init( self ):
-    raise(NotImplementedError)
-    
-    
-  def control_panel_state_playing( self ):
-    raise(NotImplementedError)
-    
-    
-  def control_panel_state_paused( self ):
-    raise(NotImplementedError)
-    
-    
-  def control_panel_state_finished( self, alert_text ):
-    raise(NotImplementedError)
-    
-    
-  # EVENT HANDLERS:
-  def on_play( self, widget ):
-    self.simulator.play_sim()
-    
-  def on_stop( self, widget ):
-    self.simulator.pause_sim()
-    
-    
-  def on_step( self, widget ):
-    self.simulator.step_sim_once()
-    
-    
-  def on_reset( self, widget ):
-    self.simulator.reset_sim()
-    
-    
-  def on_save_map( self, widget ):
-    raise(NotImplementedError)
-    
-    
-  def on_load_map( self, widget ):
-    raise(NotImplementedError)
-      
-      
-  def on_random_map( self, widget ):
-    self.simulator.random_map()
-    
-    
-  def on_draw_invisibles( self, widget ):    
-    # toggle the draw_invisibles state
-    self.draw_invisibles = not self.draw_invisibles
-    if self.draw_invisibles:
-      self.decorate_draw_invisibles_button_active()
-    else:
-      self.decorate_draw_invisibles_button_inactive()
-    self.simulator.draw_world()
-    
-    
-  def on_expose( self, widget, event ):
-    raise(NotImplementedError)
-    
-    
-  def on_delete( self, widget, event ):
-    
-    raise(NotImplementedError)
-    
-    
-  def decorate_draw_invisibles_button_active( self ):
-    raise(NotImplementedError)
-    
-    
-  def decorate_draw_invisibles_button_inactive( self ):
-    raise(NotImplementedError)
