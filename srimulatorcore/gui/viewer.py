@@ -25,7 +25,7 @@ class Viewer:
     # bind the simulator
     self.simulator = simulator
     self.current_frame = None
-    self.pixels_per_meter = 0
+    self.pixels_per_meter = 1
     
   def new_frame( self ):
     self.current_frame = Frame()
