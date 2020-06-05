@@ -19,6 +19,9 @@
 
 from .frame import Frame
 
+DEFAULT_VIEW_PIX_W = 400    # pixels
+DEFAULT_VIEW_PIX_H = 400    # pixels
+DEFAULT_ZOOM = 50          # pixels per meter
 MAJOR_GRIDLINE_INTERVAL = 1.0 # meters
 MAJOR_GRIDLINE_SUBDIVISIONS = 5  # minor gridlines for every major gridline
 
@@ -29,9 +32,10 @@ class Viewer:
     # bind the simulator
     self.simulator = simulator
     self.current_frame = None
-    self.pixels_per_meter = 1
-    self.view_width_pixels = 1
-    self.view_height_pixels = 1
+    self.view_height_pixels = DEFAULT_VIEW_PIX_H
+    self.pixels_per_meter = DEFAULT_ZOOM
+    self.view_width_pixels = DEFAULT_VIEW_PIX_W
+    self.view_height_pixels = DEFAULT_VIEW_PIX_H
     self.draw_invisibles = True
     
   def new_frame( self ):
