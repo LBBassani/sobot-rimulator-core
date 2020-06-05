@@ -69,7 +69,7 @@ class Rimulator:
     self.world_view = WorldView( self.world, self.viewer )
     
     # render the initial world
-    self.draw_world()
+    # self.draw_world()
     
     
   def play_sim( self ):
@@ -111,6 +111,7 @@ class Rimulator:
     
     
   def draw_world( self ):                # start a fresh frame
+    self.viewer.new_frame()
     self.world_view.draw_world_to_frame(self.world.robots[0].pose.vposition())   # draw the world onto the frame    
 
 
