@@ -50,7 +50,7 @@ class WorldView:
 
   def draw_world_to_frame( self , ref_pose = [0.0, 0.0]):
     # draw the grid
-    self._draw_grid_to_frame( )
+    # self._draw_grid_to_frame( )
     
     # draw all the robots
     for robot_view in self.robot_views:
