@@ -128,6 +128,10 @@ class Rimulator:
   
   def add_robot(self, robot_type):
     self.robot_types.append(robot_type)
+    self.update_robot(robot_type)
+  
+  def delete_robot(self, robot_pos):
+    self.world.delete_robot(robot_pos)
 
   def add_viewer(self, viewer):
     self.viewer = viewer

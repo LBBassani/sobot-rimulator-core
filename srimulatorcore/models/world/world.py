@@ -60,6 +60,10 @@ class World:
     self.robots.append( robot )
     self.supervisors.append( robot.supervisor )
 
+  def delete_robot( self, robot_pos ):
+    self.robots.pop(robot_pos)
+    self.supervisors.pop( robot_pos )
+
   def add_obstacle( self, obstacle ):
     self.obstacles.append( obstacle )
 
